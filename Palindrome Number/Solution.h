@@ -12,8 +12,6 @@ public:
             x/=10;
             rev = rev*10 + digit;
         }
-        if (rev == temp)
-            return true;
-        return false;
+        return rev == temp;
     }
 };
