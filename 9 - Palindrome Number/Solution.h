@@ -1,5 +1,5 @@
 /*
-    Date 5/5/2023
+    Date: 5/5/2023
     Time Complexity: O(n)
     Space Complexity: O(1)
 */
