@@ -2,7 +2,7 @@
     Date: 5/8/2023
     Time Complexity: O(n * klog(k))
         n: size of list of strings
-        k: length of the largest string
+        k: average string length
     Space Complexity: O(n)
 */
 
