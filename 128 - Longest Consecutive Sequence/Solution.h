@@ -1,3 +1,11 @@
+/*
+    Date: 5/13/2023
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+
+    To be finished...
+*/
+
 #include <vector>
 #include <unordered_map>
 #include <list>
@@ -9,18 +17,20 @@ using namespace std;
 
 class Solution {
 public:
+    void seqMapInsert(unordered_map<int, pair<list<int>, list<int>>>& seqMap, int n, list<int> seq) {
+        auto iter = seqMap.find(n);
+        if (iter == seqMap.end() || seqMap[n].first.size() == 0) seqMap[n].first = seq;
+        else seqMap[n].second = seq;
+    }
+
     int longestConsecutive(vector<int>& nums) {
         if (nums.size() == 0)
             return 0;
 
         // Each list is in ascending order (greatest at the back)
         unordered_map<int, pair<list<int>, list<int>>> seqMap;
-        set<int> numsSet;
-
-        for (int& n : nums)
-            numsSet.insert(n);
         
-        for (auto setIter = numsSet.begin(); setIter != numsSet.end(); setIter++) {
+        for (auto setIter = nums.begin(); setIter != nums.end(); setIter++) {
 
             // Look for n in seqMap
             int n = *setIter;
@@ -67,7 +77,7 @@ public:
                         // Insert back to seq
                         iter->second.first.push_back(n);
                         // Add new back to seqMap
-                        seqMapInsert(seqMap, n-1, iter->second.first);
+                        seqMapInsert(seqMap, n+1, iter->second.first);
                     }
                     else {
                         // Insert front to seq
@@ -90,20 +100,11 @@ public:
 
         int maxLength = 0, curLength = 0;
         for (auto iter = seqMap.begin(); iter != seqMap.end(); iter++) {
-            cout << "K: " << iter->first << " | V: " << iter->second.first.size() << ", " << iter->second.second.size();
-            cout << endl;
-
             curLength = max(iter->second.first.size(), iter->second.second.size());
             if (curLength > maxLength) 
                 maxLength = curLength;
         }
 
         return maxLength;
-    }
-
-    void seqMapInsert(unordered_map<int, pair<list<int>, list<int>>>& seqMap, int n, list<int> seq) {
-        auto iter = seqMap.find(n);
-        if (iter == seqMap.end()) seqMap[n].first = seq;
-        else seqMap[n].second = seq;
     }
 };
