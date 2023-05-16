@@ -1,3 +1,10 @@
+/*
+    Date: 5/15/2023
+    Time Complexity: O(1)
+    Space Complexity: O(n)
+*/
+
+
 #include <stack>
 #include <iostream>
 #pragma once
@@ -21,11 +28,10 @@ public:
     int min;
 
     MinStack() {
-        cout << "MinStack\n";
+
     }
     
     void push(int val) {
-        cout << "push(" << val << ")\n";
         if (stk.size() == 0 || val < min) {
             mins.emplace(val, 0);
             min = val;
@@ -35,22 +41,19 @@ public:
     }
     
     void pop() {
-        cout << "pop()\n";
         mins.top().second--;
         if (mins.top().second == 0) {
             mins.pop();
-            min = mins.top().first;
+            min = (mins.size() == 0) ? INT_MIN : mins.top().first;
         }
         stk.pop();
     }
     
     int top() {
-        cout << "top()\n";
         return stk.top();
     }
     
     int getMin() {
-        cout << "getMin()\n";
         return min;
     }
 };

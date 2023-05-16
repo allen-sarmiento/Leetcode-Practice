@@ -13,6 +13,7 @@ int main() {
     ms.pop();
     ms.getMin();
     ms.pop();
+    ms.getMin();
 
     return 0;
 }
