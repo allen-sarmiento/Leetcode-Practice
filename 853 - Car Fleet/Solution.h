@@ -35,6 +35,7 @@ public:
         carIndexes.push(maxSpos);
         for (int i = 0; i < position.size(); i++) {
             if (i == maxSpos) continue;
+            int temp = i;
             while ( !carIndexes.empty() &&
                     (getFpos(i, hours, target, position, speed) >=
                     getFpos(carIndexes.top(), hours, target, position, speed)) &&
