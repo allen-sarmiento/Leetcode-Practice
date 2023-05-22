@@ -1,51 +1,43 @@
+/*
+    Date: 5/21/2023
+    Time Complexity: O(nlog(n))
+    Space Complexity: O(n)
+*/
+
 #include <vector>
 #include <stack>
 #include <algorithm>
+#include <cmath>
 #pragma once
 
 using namespace std;
 
-/*
-    Input:  target      = 100
-            position    = [0, 2, 4]
-            speed       = [4, 2, 1]
-            fpos        = [x, x, 96] (x indicates > 100)
-    Output: 1
-
-    carIndexes: [4]
-    numFleets = 2;
-    maxSPos = 4;
-    hours = 96;
-*/
-
 class Solution {
 public:
-
-    int getFpos(int index, int time, int target, vector<int>& position, vector<int>& speed) {
-        int fpos = position[index] + speed[index]*time;
-        fpos = (fpos > target) ? target : fpos;
-        return fpos;
+    float getTime(int target, int pos, int spd) {
+        return (target - pos)/(float)spd;
     }
 
     int carFleet(int target, vector<int>& position, vector<int>& speed) {
-        stack<int> carIndexes;
-        int numFleets = position.size();
-        int maxSpos = distance(position.begin(), max_element(position.begin(), position.end()));
-        int hours = (target - position[maxSpos])/speed[maxSpos];
-        carIndexes.push(maxSpos);
-        for (int i = 0; i < position.size(); i++) {
-            if (i == maxSpos) continue;
-            int temp = i;
-            while ( !carIndexes.empty() &&
-                    (getFpos(i, hours, target, position, speed) >=
-                    getFpos(carIndexes.top(), hours, target, position, speed)) &&
-                    position[i] < position[carIndexes.top()]) {
-                numFleets--;
-                if (temp == i) temp = carIndexes.top();
-                carIndexes.pop();
+
+        int n = position.size();
+        vector<pair<int,int>> cars;
+        for (int i = 0; i < n; i++)
+            cars.push_back(make_pair(position[i],speed[i]));
+        sort(cars.begin(), cars.end());
+
+        vector<pair<int,int>> fleets;
+
+        // loop through all cars in reverse (closest to target first)
+        for (int i = n-1; i >= 0; i--) {
+            fleets.push_back(cars[i]);
+            int k = fleets.size();
+            if (k >= 2 &&
+                getTime(target, fleets[k-1].first, fleets[k-1].second) <=
+                getTime(target, fleets[k-2].first, fleets[k-2].second)) {
+                fleets.pop_back();
             }
-            carIndexes.push(temp);
         }
-        return carIndexes.size();
+        return fleets.size();
     }
 };
