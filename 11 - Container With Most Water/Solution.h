@@ -1,12 +1,14 @@
+/*
+    Date: 7/29/2023
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+*/
+
 #include <vector>
 
 using namespace std;
 
 /*
-    You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
-    Find two lines that together with the x-axis form a container, such that the container contains the most water.
-    Return the maximum amount of water a container can store.
-
     Brute-force Approach:
         - Loop through each possible combination pair of lines and calculate amount of water that pair can hold.
         - Store amounts in a list and find the maximum
@@ -33,43 +35,15 @@ using namespace std;
 
 class Solution {
 public:
-
     int maxArea(vector<int>& height) {
-
-        // lambda function for finding area based on two indices
-        auto getArea = [&](int L, int R) -> int {
-            int area = min(height[L], height[R]) * (R-L);
-            return area;
-        };
-        
-        vector<int> areas;
-        
-        int L = 0, R = height.size()-1;
         int lp = 0, rp = height.size()-1;
-        int area = getArea(L, R);
-        int maxArea = area;
-
+        int maxArea = -1;
         while (lp < rp) {
-            if (height[rp] < height[lp]) {          // Find new right pointer
-                while (lp < rp && getArea(L, rp) <= getArea(L, R))
-                    rp--;
-                area = getArea(L, rp);
-            } else if (height[lp] < height[rp]) {   // Find new left pointer
-                while (lp < rp && getArea(lp, R) <= getArea(L, R))
-                    lp++;
-                area = getArea(lp, R);         
-            } else { // Find new left and right pointers
-                while (lp < rp && getArea(lp + 1, R) <= getArea(L, R))
-                    lp++;
-                while (lp < rp && getArea(L, rp - 1) <= getArea(L, R))
-                    rp--;
-                area = getArea(lp, rp);
-            }
-            if (area > maxArea) {
+            int area = min(height[lp], height[rp]) * (rp-lp);
+            if (area > maxArea)
                 maxArea = area;
-                L = lp;
-                R = rp;
-            }
+            if (height[lp] > height[rp]) rp--;
+            else lp++;
         }
         return maxArea;
     }
